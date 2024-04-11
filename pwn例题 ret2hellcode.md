@@ -29,7 +29,6 @@
     ```python
     from pwn import *
     io = process('./pwn')
-    io.recvuntil(b"Welcome to SDCCTF 2023 Final!\n")
     buf_addr = io.recvline(keepends=False)      
     buf_addr = buf_addr[len("Write to here ["):-1].decode("ascii")  # 把接收到的byte格式地址转换成string
     buf_addr = int(buf_addr, 16)                                    # 转换16进制string为数字
