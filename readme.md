@@ -1,3 +1,4 @@
+# PWN从入门到入土
 ### hint
 - ida快捷键 
   - 提取数据 shift + E
@@ -34,7 +35,11 @@
   - write函数泄露地址  
     函数原型：  
     ```c
-    ssize write(int fd,const void * buf,size_t count);
+    // weite 和 read 的第一个fd参数是模式选择，一般填1就行了
+    ssize_t write(int fd, const void * buf, size_t count);
+    ssize_t read(int fd, void *buf, size_t count);
+    // put只有一个字符串参数，但是记得在栈里面要先填函数返回地址
+    int puts(const char *s);
     ```  
     payload：首先将write_plt作为栈上的调用地址，main作为write_plt函数的返回地址方便下一步循环，1为write的写模式，写入的内容为write_got，写入长度为4字节（32位）  
     ```python
@@ -48,7 +53,7 @@
 - STACK CANARY 栈保护 不能直接覆盖函数返回地址
 - NX 输入的字段不可编译 用ROP绕过
 - PIE 类似ASLR地址随机化
-- FORTIFY 函数源码保护，read, printf等函数漏洞无法利用
+- FORTIFY 函数源码保护，strcpy, gets, read, printf等函数漏洞无法利用
 
 #### gcc
 - gcc -no-pie -fno-stack-protector -zexecstack -o testfile 
